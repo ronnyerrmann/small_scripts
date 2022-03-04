@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # If an existing valid lock file present, stop. Else clean-up and continue.
 if [ -f /tmp/checkLidClosed.pid ]
 then
@@ -20,13 +21,15 @@ echo $$ > /tmp/checkLidClosed.pid
 trap "/bin/rm -f /tmp/checkLidClosed.pid; echo 'Script forcibly terminated.'; exit 1" INT TERM
 trap "/bin/rm -f /tmp/checkLidClosed.pid; exit 0" EXIT
 
+# Settings to check when open, and close and what to do
+pathToScript=$(dirname $(readlink -f $0))
 lidStatusCmd() {
   cat /proc/acpi/button/lid/LID0/state | awk '{print $2}' | tr -d '\n'
 }
 statusOpen='open'
 statusClose='closed'
-commandOpen="python3 lid_change.py open &"
-commandClose="python3 lid_change.py close &"
+commandOpen="python3 $pathToScript/lid_change.py open &"
+commandClose="python3 $pathToScript/lid_change.py close &"
 
 oldStatus="$(lidStatusCmd)"
 #oldStatus= ${oldStatus::-1}
