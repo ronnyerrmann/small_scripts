@@ -12,6 +12,11 @@ python3 lid_change.py open
 ### lid_change/checkLidClosed.sh
 Contains the checks if the lid is closed and calls lid_change.py
 
+Make the script executable:
+```
+chmod u+x <path>/small_scripts/lid_change/checkLidClosed.sh
+```
+
 crontab needs the following entry to start automatically:
 ```
 @reboot <path>/small_scripts/lid_change/checkLidClosed.sh

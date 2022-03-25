@@ -1,4 +1,5 @@
 #!/bin/bash
+# Author: Ronny Errmann
 
 # If an existing valid lock file present, stop. Else clean-up and continue.
 if [ -f /tmp/checkLidClosed.pid ]
