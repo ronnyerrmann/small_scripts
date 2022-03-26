@@ -25,10 +25,11 @@ trap "/bin/rm -f /tmp/check_discharge.pid; exit 0" EXIT
 # Settings to check when open, and close and what to do
 pathToScript=$(dirname $(readlink -f $0))
 BatteryStatus() {
-  upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep state | awk '{print $2}' | tr -d '\n'
+  #upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep state | awk '{print $2}' | tr -d '\n'      # This also says discharging when fully charged
+  acpi -b | awk '{print $3}' | tr -d '\n'
 }
-statusBattery='discharging'
-statusPluggedIn='???'
+statusBattery='Discharging,'
+statusPluggedIn='Unknown,'
 commandStart="python3 $pathToScript/status_change.py start &"
 commandStop="python3 $pathToScript/status_change.py stop &"
 
@@ -39,12 +40,12 @@ do
   status="$(BatteryStatus)"
   if [ "$status" != "$oldStatus" ]
   then
-    if [ $status == $statusPluggedIn ]
+    if [ $status == $statusBattery ]
     then 
       eval $commandStop
-    elif [ $status == $statusBattery ]
+    elif [ $status == $statusPluggedIn ]
     then 
-      eval $commandStart
+      eval $commandStart	
     else
       echo "Unexpected battery status: $status , expected $statusPluggedIn or $statusBattery"
     fi

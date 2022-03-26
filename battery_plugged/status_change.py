@@ -9,7 +9,6 @@ commandList.append(["boinccmd --set_run_mode never", "boinccmd --set_run_mode au
 
 fileToExcludedOpenCmds = "/tmp/suspendBattery.cmds"
 
-
 """
 Test the script with the following lines to be sure that the command list works
 python3 status_change.py stop

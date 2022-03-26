@@ -2,15 +2,15 @@
 Running Scripts when power is disconnected to the laptop or reconnected again.
 This is solved by two scripts:
 
-### lid_change/lid_change.py
-Contains the code to run commands when the lid status changes, and to suspend or resume processes when the lid is closed or opened. The processes can be modified in the beginning of the script. Test the script with the following lines to be sure that the command list works (nocheck will ignore the open lid during the test)
+### battery_plugged/status_change.py
+Contains the code to run commands when the status of the power supply changes. The processes can be modified in the beginning of the script. Test the script with the following lines to be sure that the command list works:
 ```
-python3 lid_change.py close nocheck
-python3 lid_change.py open
+python3 status_change.py stop
+python3 status_change.py start
 ```
 
 ### battery_plugged/check_discharge.sh
-Contains the checks if the if the batter is discharging or not and calls script_change.py
+Contains the checks if the if the batter is discharging or not and calls status_change.py. Please check that the command given in `BatteryStatus` will run on the system, acpi might need to be installed.
 
 Make the script executable:
 ```
