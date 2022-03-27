@@ -29,7 +29,8 @@ BatteryStatus() {
   acpi -b | awk '{print $3}' | tr -d '\n'
 }
 statusBattery='Discharging,'
-statusPluggedIn='Unknown,'
+statusPluggedIn1='Unknown,'
+statusPluggedIn2='Charging,'
 commandStart="python3 $pathToScript/status_change.py start &"
 commandStop="python3 $pathToScript/status_change.py stop &"
 
@@ -40,14 +41,20 @@ do
   status="$(BatteryStatus)"
   if [ "$status" != "$oldStatus" ]
   then
-    if [ $status == $statusBattery ]
+    if [ "$status" == "$statusBattery" ]
     then 
+      #echo "stop"
       eval $commandStop
-    elif [ $status == $statusPluggedIn ]
+    elif [[ "$status" == "$statusPluggedIn1" && "$oldstatus" != "$statusPluggedIn2" ]]
     then 
+      #echo "start 1"
+      eval $commandStart	
+    elif [[ "$status" == "$statusPluggedIn2" && "$oldstatus" != "$statusPluggedIn1" ]]
+    then
+      #echo "start 2"
       eval $commandStart	
     else
-      echo "Unexpected battery status: $status , expected $statusPluggedIn or $statusBattery"
+      echo "Unexpected battery status: $status . Expected $statusPluggedIn1 or $statusPluggedIn2  or $statusBattery"
     fi
   fi
   #echo "$status and $oldStatus"

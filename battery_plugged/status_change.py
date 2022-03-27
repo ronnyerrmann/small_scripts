@@ -48,6 +48,7 @@ if sys.argv[1] == 'start':
     if os.path.isfile(fileToExcludedOpenCmds):
         my_file = open(fileToExcludedOpenCmds, "r")
         excludedOpenCmds = my_file.read().split("\n")
+        os.remove(fileToExcludedOpenCmds)
 elif sys.argv[1] == 'stop':
     commandIndex = 0
 else:

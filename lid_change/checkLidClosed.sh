@@ -39,10 +39,10 @@ do
   status="$(lidStatusCmd)"
   if [ "$status" != "$oldStatus" ]
   then
-    if [ $status == $statusClose ]
+    if [ "$status" == "$statusClose" ]
     then 
       eval $commandClose
-    elif [ $status == $statusOpen ]
+    elif [ "$status" == "$statusOpen" ]
     then 
       eval $commandOpen
     else
