@@ -90,7 +90,10 @@ def checkCondiditionBeforeSuspend(command, runCommand, fileToExcludedOpenCmds):
     if len(command[2]) != 4:
         raise ValueError("Wrong number of entries in the list", "Expected 4 entries, got {0}".format(len(command[2])), command[2])
     # Do the comparison
-    outputCheckCmd = subprocess.check_output(command[2][1].split()).decode()
+    try:
+        outputCheckCmd = subprocess.check_output(command[2][1].split()).decode()
+    except:
+        outputCheckCmd = ''
     result = -1
     if command[2][2] == "contains":
         result = outputCheckCmd.find(command[2][3])

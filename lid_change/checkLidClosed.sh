@@ -51,7 +51,7 @@ do
   fi
   #echo "$status and $oldStatus"
   oldStatus=$status
-  sleep 1
+  sleep 3
 done
 
 
