@@ -19,7 +19,7 @@ def check_prepare_lockfile():
                 exit(0)
             else:
                 # The process which created the lock file no longer exists
-                print(f"Cleaning up after dead {scriptname} script.")
+                # print(f"Cleaning up after dead {scriptname} script.")
                 os.remove(pidfile)
 
     # Create a lock file
@@ -50,13 +50,16 @@ if __name__ == '__main__':
     check_prepare_lockfile()
     while True:
         mem_percent = get_ram_usage_percent()
-        if mem_percent > 97:
+        if mem_percent > 96:
             probproc_pre = get_process()
             time.sleep(2)   # give it a second
             mem_percent = get_ram_usage_percent()
-            if mem_percent > 95:
+            if mem_percent > 96:
                 probproc = get_process()
                 if probproc_pre["pid"] == probproc["pid"]:
-                    print(f"{datetime.strftime('%Y%m%d %H:%M:%S')} - Warning: only {mem_percent} of memory left, therefore process {probproc} will be killed")
                     os.system(f"kill {probproc['pid']}")
+                    print(f"{datetime.now().strftime('%Y%m%d %H:%M:%S')} - "
+                          f"Warning: using {mem_percent} percent of memory, "
+                          f"therefore process {probproc} has been killed")
+
         time.sleep(5)
