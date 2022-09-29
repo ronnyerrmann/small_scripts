@@ -14,3 +14,6 @@ When the linux system creates too much information to be stored, some automatic 
 
 ## memory/
 Check the memory usage and kill programs if necessary [memory](memory/README.md)
+
+## killtree.sh
+Kill all (child) processes in the process tree. Call with PID and optional the SIGTERM
