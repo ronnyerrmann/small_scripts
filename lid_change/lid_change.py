@@ -15,6 +15,7 @@ processList = []                # Processes to suspend
 processList.append("chrome")
 processList.append("opera")
 processList.append("thunderbird")
+processList.append("java")
 tooHighCPUPercentage = 5
 checkProcessesSeconds = 120     # How many seconds after closing the lid to check and suspend the processes that have a high CPU usage and are in processList
 

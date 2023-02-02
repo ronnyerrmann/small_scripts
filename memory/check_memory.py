@@ -4,6 +4,9 @@ import psutil
 from datetime import datetime
 
 
+ignore_proc = {"clamd", "gnome-shell"}
+
+
 def check_prepare_lockfile():
     scriptname = os.path.basename(__file__)
     pidfile = f"/tmp/{scriptname}.pid"
@@ -15,7 +18,7 @@ def check_prepare_lockfile():
             print(f"Can't read old pidfile: {pidfile}")
         else:
             if oldpid in psutil.pids():
-                print("Another session of $scriptname is running, so terminating.")
+                print(f"Another session of {scriptname} is running, so terminating.")
                 exit(0)
             else:
                 # The process which created the lock file no longer exists
@@ -51,15 +54,19 @@ if __name__ == '__main__':
     while True:
         mem_percent = get_ram_usage_percent()
         if mem_percent > 96:
-            probproc_pre = get_process()
+            probproc_pre = get_process(ignore_proc)
             time.sleep(2)   # give it a second
             mem_percent = get_ram_usage_percent()
             if mem_percent > 96:
-                probproc = get_process()
+                probproc = get_process(ignore_proc)
                 if probproc_pre["pid"] == probproc["pid"]:
-                    os.system(f"kill {probproc['pid']}")
-                    print(f"{datetime.now().strftime('%Y%m%d %H:%M:%S')} - "
-                          f"Warning: using {mem_percent} percent of memory, "
-                          f"therefore process {probproc} has been killed")
+                    return_code = os.system(f"kill {probproc['pid']}")
+                    msg = [f"{datetime.now().strftime('%Y%m%d %H:%M:%S')}- ",
+                           f"Warning: using {mem_percent} percent of memory,",
+                           f"therefore process {probproc} has been send the kill command.",
+                           f"Return code: {return_code}"]
+                    print(" ".join(msg))
+                    txt = "\n".join(msg)
+                    os.system(f"notify-send '{txt}'")
 
         time.sleep(5)
