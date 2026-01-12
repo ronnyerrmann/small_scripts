@@ -40,8 +40,13 @@ do
   if [ "$status" != "$oldStatus" ]
   then
     if [ "$status" == "$statusClose" ]
-    then 
-      eval $commandClose
+    then
+      sleep 3
+      status="$(lidStatusCmd)"
+      if [ "$status" == "$statusClose" ]
+      then
+        eval $commandClose
+      fi
     elif [ "$status" == "$statusOpen" ]
     then 
       eval $commandOpen

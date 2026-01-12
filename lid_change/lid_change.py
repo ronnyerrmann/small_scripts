@@ -8,14 +8,22 @@ commandList = []    # command when closed, command when opened, optional paramet
                     #   "not"/"only" if, command to check, "contains", (part of the) output of the command 
 commandList.append(["boinccmd --set_run_mode never", "boinccmd --set_run_mode auto", ["not", "boinccmd --get_cc_status", "contains", "CPU status\n    suspended: user request"] ])
 commandList.append(["killall zoom", ""])
-commandList.append(["amixer -q -D pulse sset Master mute", "amixer -q -D pulse sset Master unmute"])
 commandList.append(["gnome-screensaver-command -l", ""])
+commandList.append(["killall -STOP Spider", "killall -CONT Spider"])
+#commandList.append(["systemctl --user stop pulseaudio.socket", "systemctl --user start pulseaudio.socket"])  #Replaces the two commands below
+# commandList.append(["amixer -q -D pulse sset Master mute", "amixer -q -D pulse sset Master unmute"])
+# commandList.append(["killall -STOP pulseaudio", "killall -CONT pulseaudio"])    # doesn't stop tick_sched_timer to use a lot of power in powertop
+
+commandListSudo = []
+commandListSudo.append(["service bluetooth stop", "service bluetooth start"])
+commandListSudo.append(["pm-powersave true", "pm-powersave false"])
 
 processList = []                # Processes to suspend 
 processList.append("chrome")
 processList.append("opera")
 processList.append("thunderbird")
 processList.append("java")
+processList.append("steamwebhelper")
 tooHighCPUPercentage = 5
 checkProcessesSeconds = 120     # How many seconds after closing the lid to check and suspend the processes that have a high CPU usage and are in processList
 
